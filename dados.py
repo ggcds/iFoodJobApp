@@ -7,8 +7,8 @@ SEU_NOME = {
     "LinkedIn": "PREENCHER", # Campo de texto
     "Website/Portfólio": "PREENCHER", # Campo de texto
     "Quais são os seus pronomes?": "Ele/Dele", # Opcoes: Ele/Dele, Ela/Dela, Ile/Dile, Elu/Delu
-    "Onde você descobriu a vaga?": "Site de carreiras", # Opcoes:
-    "Você já trabalhou no iFood?": "Não", # Opcoes:
+    "Onde você descobriu a vaga?": "Site de carreiras", # Opcoes: LinkedIn, Instagram, Indeed, Glassdoor, Indicação, Podcast, Medium, Site de carreiras, Nenhuma das alternativas acima
+    "Você já trabalhou no iFood?": "Não", # Opcoes: Sim, Não
     "Com qual gênero você se identifica?": "Homem cis", # Opcoes: Homem cis, Mulher cis, Homen trans, Mulher trans, Não-binário, Travesti, Outra, Não quero responder
     "Qual sua orientação sexual?": "Heterossexual", # Opcoes: Assexual, Bissexual, Homossexual, Heterossexual, Pansexual, Outras, Não quero responder
     "Qual é sua cor ou raça?": "Branco", # Opcoes: Amarelo, Indígena, Branco, Pardo, Preta, Não quero responder
