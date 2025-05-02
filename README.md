@@ -20,6 +20,8 @@ Este projeto automatiza o processo de candidatura para vagas no site de carreira
 ├── labels_agrupados.py       # Dicionário dinâmico com mapeamento label → id
 ├── dados.py                  # Dados do candidato e configurações do Mongo
 ├── requirements.txt          # Dependências do projeto
+├── files/
+│   └── curriculo.pdf   
 ```
 
 ---
@@ -37,7 +39,7 @@ cd ifoodjobapp
 
 ```bash
 pip install -r requirements.txt
-playwright install
+playwright install chromium
 ```
 
 ### 3. Configure os dados
