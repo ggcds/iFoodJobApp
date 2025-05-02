@@ -13,6 +13,8 @@ Este projeto automatiza o processo de candidatura para vagas no site de carreira
 
 ```
 .
+├── files/
+│   └── curriculo.pdf         # Currículo utilizado no envio de candidaturas
 ├── executor.py               # Roda o processo completo em lote
 ├── scraping_ifood.py         # Extrai links de vagas do site do iFood
 ├── form_map.py               # Mapeia os campos do formulário por label
