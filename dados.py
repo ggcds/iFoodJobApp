@@ -19,6 +19,6 @@ SEU_NOME = {
 }
 
 # Banco
-MONGO_URI = "PREENCHER"
-DATABASE = "PREENCHER"
-COLLECTION = "PREENCHER"
+MONGO_URI = "PREENCHER" # Preencher com sua URI
+DATABASE = "ifood_carreiras"
+COLLECTION = "vagas_ifood"

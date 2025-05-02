@@ -1,2 +1,2 @@
-playwright==1.42.0
-pymongo==4.6.1
+playwright==1.51.0
+pymongo==4.8.0
