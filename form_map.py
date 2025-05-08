@@ -4,12 +4,20 @@ from time import sleep
 from collections import defaultdict
 from dados import MONGO_URI, DATABASE, COLLECTION
 
+
 def conectar_mongo():
+    """
+    Conecta ao MongoDB e retorna a coleção de vagas.
+    """
     client = MongoClient(MONGO_URI)
     db = client[DATABASE]
     return db[COLLECTION]
 
+
 def extrair_labels_e_nomes(page):
+    """
+    Extrai do formulário aberto todos os labels e seus 'for', retornando um dict {nome_campo: label_text}.
+    """
     objeto = {}
     labels = page.query_selector_all("form label[for]")
     for label in labels:
@@ -20,9 +28,23 @@ def extrair_labels_e_nomes(page):
             objeto[for_attr] = texto_limpo
     return objeto
 
+
 def mapear_todas_as_vagas():
+    """
+    Mapeia os campos de formulário apenas para vagas não processadas ou com erro,
+    e agrupa os labels em um arquivo labels_agrupados.py.
+    """
     collection = conectar_mongo()
-    vagas = list(collection.find({}))
+
+    # Filtra apenas vagas novas (sem data_envio) ou com status 'erro'
+    query = {
+        "$or": [
+            {"data_envio": {"$exists": False}},  # vagas nunca processadas
+            {"status": "erro"}                   # vagas com tentativa anterior com erro
+        ]
+    }
+    vagas = list(collection.find(query))
+    print(f"📊 Vagas a mapear (novas/erro): {len(vagas)}\n")
 
     agrupado_por_valor = defaultdict(set)
 
@@ -36,8 +58,7 @@ def mapear_todas_as_vagas():
                 print("⚠️ Documento sem URL, ignorado.")
                 continue
 
-            print(f"\n🔗 Acessando: {url}")
-
+            print(f"\n🔗 Acessando para mapear: {url}")
             try:
                 page.goto(url)
                 page.wait_for_load_state("networkidle")
@@ -46,7 +67,6 @@ def mapear_todas_as_vagas():
 
                 campos = extrair_labels_e_nomes(page)
                 print(f"📋 Campos encontrados:\n{campos}")
-
                 for chave, valor in campos.items():
                     agrupado_por_valor[valor].add(chave)
 
@@ -57,9 +77,13 @@ def mapear_todas_as_vagas():
 
         browser.close()
 
+    # Salva agrupamento em labels_agrupados.py (sobrescrevendo existente)
     if agrupado_por_valor:
         print("\n📝 Salvando agrupamento em labels_agrupados.py...")
-        with open("labels_agrupados.py", "w", encoding="utf-8") as f:
+        from pathlib import Path
+        base = Path(__file__).parent
+        destino = base / "labels_agrupados.py"
+        with open(destino, "w", encoding="utf-8") as f:
             f.write("labels_agrupados = {\n")
             for label, chaves in agrupado_por_valor.items():
                 label_limpo = label.replace("*", "").strip()
@@ -68,6 +92,3 @@ def mapear_todas_as_vagas():
         print("✅ Agrupamento salvo com sucesso.")
     else:
         print("✅ Nenhum campo encontrado.")
-
-if __name__ == "__main__":
-    mapear_todas_as_vagas()
