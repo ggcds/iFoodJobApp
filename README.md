@@ -1,92 +1,71 @@
-# 🤖 iFoodJobApp - Automação de Candidaturas no iFood
+# iFoodJobApp – Job Application Automation
 
-Este projeto automatiza o processo de candidatura para vagas no site de carreiras do iFood, realizando:
+Automates applying to job openings on the iFood careers site:
 
-1. Scraping das vagas disponíveis.
-2. Mapeamento dinâmico dos campos do formulário.
-3. Preenchimento automático dos dados do candidato.
-4. Envio da candidatura e registro do status no MongoDB.
+1. Scrapes the available openings.
+2. Dynamically maps the application form fields by label.
+3. Fills in the candidate's data automatically.
+4. Submits the application and records its status in MongoDB.
 
----
+> **Disclaimer:** educational and personal project. Automated access may violate the website's terms of use. Use at your own risk, keep request volume low, and remember that every form submission is a real application.
 
-## 📦 Estrutura do Projeto
+## Project structure
 
 ```
 .
-├── executor.py               # Roda o processo completo em lote
-├── scraping_ifood.py         # Extrai links de vagas do site do iFood
-├── form_map.py               # Mapeia os campos do formulário por label
-├── main.py                   # Preenche e envia o formulário com Playwright
-├── labels_agrupados.py       # Dicionário dinâmico com mapeamento label → id
-├── dados.py                  # Dados do candidato e configurações do Mongo
-├── requirements.txt          # Dependências do projeto
-├── files/
-│   └── curriculo.pdf   
+├── executor.py          # Runs the full pipeline in batch
+├── scraping_ifood.py    # Collects job links from the iFood careers site
+├── form_map.py          # Maps form fields by label
+├── main.py              # Fills in and submits the form with Playwright
+├── labels_agrupados.py  # Label → field id mapping
+├── dados.py             # Candidate data and MongoDB settings
+├── requirements.txt
+└── files/
+    └── curriculo.pdf    # Your resume (not versioned, you provide it)
 ```
 
----
-
-## 🚀 Como usar
-
-### 1. Clone o projeto
+## Getting started
 
 ```bash
-git clone https://github.com/seu-usuario/ifoodjobapp.git
+git clone https://github.com/ggcds/ifoodjobapp.git
 cd ifoodjobapp
-```
-
-### 2. Instale as dependências
-
-```bash
 pip install -r requirements.txt
 playwright install chromium
 ```
 
-### 3. Configure os dados
+### Configure
 
-No arquivo `dados.py`, preencha os seguintes campos:
+1. Edit `dados.py` and replace every `"PREENCHER"` placeholder with your own data (name, e-mail, LinkedIn, diversity questions, etc.).
+2. Set your MongoDB connection:
+   ```python
+   MONGO_URI = "mongodb+srv://<user>:<password>@cluster.mongodb.net/"
+   DATABASE = "ifood_carreiras"
+   COLLECTION = "vagas_ifood"
+   ```
+3. Put your resume at `files/curriculo.pdf`.
 
-- Dados pessoais do candidato (nome, e-mail, LinkedIn, etc.)
-- Configurações do MongoDB:
-  ```python
-  MONGO_URI = "mongodb+srv://<user>:<senha>@cluster.mongodb.net/"
-  DATABASE = "ifood_carreiras"
-  COLLECTION = "vagas_ifood"
-  ```
+Do not commit your personal data or credentials. `files/` and `.env` are git-ignored; consider reading `MONGO_URI` from an environment variable.
 
-### 4. Execute a automação
+### Run
 
 ```bash
 python executor.py
 ```
 
----
+## What it does
 
-## 🧠 Tecnologias utilizadas
+- Filters openings by **Junior or Mid-level** seniority and **remote** location.
+- Scrapes job links and stores them in MongoDB.
+- Maps form labels dynamically.
+- Fills in text fields and dropdowns.
+- Detects applications already sent to avoid duplicates.
+- Stores each application's status and date.
 
-- [Python 3.10+](https://www.python.org/)
-- [Playwright](https://playwright.dev/python/) – automação de navegação
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) – banco de dados de controle
-- [PyMongo](https://pymongo.readthedocs.io/) – integração com MongoDB
-
----
-
-## ✅ O que o sistema faz
-
-- Filtra vagas com **senioridade Júnior ou Pleno** e **localização remota**.
-- Realiza scraping e salva os links no MongoDB.
-- Mapeia os labels HTML dos formulários de forma dinâmica.
-- Preenche automaticamente os campos e dropdowns do formulário.
-- Detecta candidaturas já enviadas para evitar duplicidade.
-- Salva o status da candidatura e a data no banco.
-
----
-
-## 📁 Exemplo de documento salvo no MongoDB
+## Example MongoDB document
 
 ```json
 {
-  "_id": ObjectId("..."),
+  "_id": "ObjectId(...)",
   "url": "https://carreiras.ifood.com.br/job/...",
   "titulo": "Analista de Dados Pleno",
   "status": "candidatura_enviada",
@@ -94,17 +73,16 @@ python executor.py
 }
 ```
 
----
+## Tech stack
 
-## 🛡️ Observações
+- [Python 3.10+](https://www.python.org/)
+- [Playwright](https://playwright.dev/python/) – browser automation
+- [PyMongo](https://pymongo.readthedocs.io/) / [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) – application tracking
 
-- Este projeto é de uso educacional e pessoal.
-- Respeite os termos de uso do site do iFood e evite abusos de scraping.
-- Use com responsabilidade: cada envio de formulário é real.
+## Author
 
----
+**Guilherme Barros Caldas** – [LinkedIn](https://www.linkedin.com/in/guilhermebcaldas/)
 
-## 🧑‍💻 Autor
+## License
 
-**Guilherme Caldas**  
-🔗 [linkedin.com/in/guilhermebcaldas](https://www.linkedin.com/in/guilhermebcaldas/)
+[MIT](LICENSE)
